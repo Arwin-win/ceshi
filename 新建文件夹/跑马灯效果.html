@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="lib/vue-2.4.0.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="dong">开始</button>
+        <button @click="ting">暂停</button>
+        <!-- <span v-html="msg"></span> -->
+        <h1>{{msg}}</h1>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                // msg:'<h1>今天，天气特别好</h1>'
+                msg: '今天，天气特别好',
+                intervalId: null,
+            },
+            methods: {
+                dong() {
+                    if (this.intervalId != null) return;
+                    this.intervalId = setInterval(() => {
+                        var star = this.msg.substring(0, 1);
+                        var stop = this.msg.substring(1);
+                        this.msg = stop + star;
+                    }, 400);
+                },
+                ting() {
+                    clearInterval(this.intervalId);
+                    this.intervalId = null;
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="../demo/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			{{msg}}
+		</div>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el:'#app',
+				data:{
+					msg:'hi vue'
+				},
+				methods:{},
+				// 生命周期函数以属性的方式来进行声明,不能使用箭头函数
+				
+				// 直译：创建之前  理解为实例化之后，数据观测和事件配置之前被调用  
+				// 整个页面创造之前 调用的 生命周期
+				beforeCreate:function(){
+					console.log('beforeCreate')
+				},
+				// 直译:已经创建好的  在实例创建之后被调用
+				// 这一步实例已经完成以下的配置:数据观测(date observer），属性和方法的运算，watch/event事件回调.
+				created:function(){
+					console.log('created')
+				},
+				// 挂载开始调用之前被调用,相关的渲染函数首次被调用
+				beforeMount:function(){
+					console.log('beforeMount')
+				},
+				// 挂载成功 el被新创建的vm.$el 替换  挂载成功
+				mounted:function(){
+					console.log('mounted')
+				},
+				// 数据更新使被调用
+				beforeUpdate:function(){
+					console.log('beforeUpdate')
+				},
+				// 组件DOM已经更新,组件更新完毕
+				updated:function(){
+					console.log('updated')
+				},
+				activated:function(){
+					console.log('activated')
+				},
+				deactivated:function(){
+					console.log('deactivated')
+				},
+				
+				
+				
+				
+				
+				beforeDestroy:function(){
+					console.log('beforeDestroy')
+				},
+				destroyed:function(){
+					console.log('destroyed')
+				},
+				errorCaptured:function(){
+					console.log('errorCaptured')
+				}
+			})
+		</script>
+	</body>
+</html>
+ 

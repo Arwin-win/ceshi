@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style type="text/css">
+        .grid {
+          margin: auto;
+          width: 530px;
+          text-align: center;
+        }
+    
+        .grid table {
+          border-top: 1px solid #C2D89A;
+          width: 100%;
+          border-collapse: collapse;
+        }
+    
+        .grid th,
+        td {
+          padding: 10;
+          border: 1px dashed #F3DCAB;
+          height: 35px;
+          line-height: 35px;
+        }
+    
+        .grid th {
+          background-color: #F3DCAB;
+        }
+    
+        .grid .book {
+          padding-bottom: 10px;
+          padding-top: 5px;
+          background-color: #F3DCAB;
+        }
+        .total{
+          background-color: #F3DCAB;            
+        }
+      </style>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="grid">
+            <div>
+                <h1>图书管理</h1>
+                <div class="book">
+                    <div>
+                        <label for="id">
+                            编号：
+                        </label>
+                        <input type="text" id="id" v-model="id" :disabled="flag" v-focus>
+                        <label for="name">
+                            名称：
+                        </label>
+                        <input type="text" id="name" v-model="name">
+                        <button @click="handle">提交</button>
+                    </div>
+                </div>
+            </div>
+            <div class="total">
+                图书的总数：
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>名称</th>
+                        <th>时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in books" :key="item.id">
+                        <td>{{item.id}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.date | dateFormat('')}}</td>
+                        <td>
+                            <a href="" @click.prevent="toEdit(item.id)">修改</a>
+                            <a href="" @click.prevent="deleteBooks(item.id)">删除</a>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        Vue.filter('dateFormat', function (datestr, pattern) {
+            var dt = new Date(datestr);
+            var y = dt.getFullYear();
+            var m = dt.getMonth() + 1;
+            var d = dt.getDate();
+
+
+
+            if (pattern.toLowerCase() === 'yyy-mm-dd') {
+                return `
+                 ${y}-${m}-${d}
+                `
+            } else {
+                var h = dt.getHours();
+                var f = dt.getMinutes();
+                var s = dt.getSeconds();
+                return `
+                 ${y}-${m}-${d}  ${h}: ${f}: ${s}
+                `
+            }
+        })
+        Vue.directive('focus',{
+            inserted:function (el) {
+                el.focus()
+            }
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                flag: false,
+                id: '',
+                name: '',
+                books: [{
+                    id: 1,
+                    name: '三国演义',
+                    date: new Date(),
+                }, {
+                    id: 2,
+                    name: '水浒传',
+                    date: new Date(),
+                }, {
+                    id: 3,
+                    name: '红楼梦',
+                    date: new Date(),
+                }, {
+                    id: 4,
+                    name: '西游记',
+                    date: new Date(),
+                }]
+            },
+            methods: {
+                handle: function () {
+                    if (this.flag) {
+                        this.books.some((item) => {
+                            if (item.id == this.id) {
+                                item.name = this.name;
+                                return true;
+                            }
+                        });
+                        this.flag = false;
+
+                    } else {
+                        var book = {};
+                        book.id = this.id;
+                        book.name = this.name;
+                        book.data = '';
+                        this.books.push(book);
+                        this.id = '';
+                        this.name = '';
+                    }
+                    this.name = '';
+                    this.id = '';
+                },
+                toEdit: function (id) {
+                    this.flag = true;
+                    var book = this.books.filter(function (item) {
+                        return item.id == id;
+                    })
+                    // console.log(book);
+                    this.id = book[0].id;
+                    this.name = book[0].name;
+                },
+                deleteBooks: function (id) {
+                    var index = this.books.findIndex((item) => {
+                        return item.id == id;
+                    });
+                    this.books.splice(index, 1);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

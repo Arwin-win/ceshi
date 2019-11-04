@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="../vue.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			/* 	table,thead,tbody{
+				border: 1px solid #333;
+			} */
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<div>
+				<label>
+					id:
+					<input type="text" v-model="id" />
+				</label>
+				<label>
+					name:
+					<input type="text" v-model="name" />
+				</label>
+				<button @click="add()">添加</button>
+				<label>
+					搜索关键字：
+					<input type="text" v-model="keywords" />
+				</label>
+			</div>
+			<table>
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Name</th>
+						<th>Ctime</th>
+						<th>Operation</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="item in search(keywords)" :key="item.id">
+						<td>{{item.id}}</td>
+						<td>{{item.name}}</td>
+						<td>{{item.ctime}}</td>
+						<td>
+							<a href="#" @click="del(id)">删除</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+	<script type="text/javascript">
+		console.log(new Date())
+		var vm = new Vue({
+			el: '#app',
+			data: {
+				id: '',
+				name: '',
+				keywords: '',
+				list: [{
+					id: 1,
+					name: '张三',
+					ctime: new Date()
+				}, 
+				{
+					id: 2,
+					name: '李三',
+					ctime: new Date()
+				},
+				{
+					id: 3,
+					name: '张四',
+					ctime: new Date()
+				}]
+			},
+			methods: {
+				add() {
+					var car = {
+						id: this.id,
+						name: this.name,
+						ctime: new Date()
+					}
+					this.list.push(car)
+				},
+				del(id) {
+					var index = this.list.findIndex(item => {
+						if (item.id == id) {
+							return true;
+						}
+					})
+					this.list.splice(index, 1);
+				},
+				search(keywords){
+					return this.list.filter(item=>{
+						if(item.name.includes(keywords)){
+							return item
+						}
+					})
+				}
+			},
+
+		})
+	</script>
+</html>
